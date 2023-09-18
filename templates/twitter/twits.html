@@ -1,0 +1,15 @@
+<form action="{% url 'twitter:twit_create' twit.id %}" method="post">
+    {% csrf_token %}
+    <textarea name="content" id="content" rows="10"></textarea>
+    <input type="submit" value="트윗">
+</form>
+{% if twits %}
+<ul class="twit-list">
+    {% for twit in twits %}
+    <li class="twit">
+        <a href="{% url 'twitter:detail' twit.id %}">{{ twit.content }}</a>
+        <span>{{ twit.create_date }}</span>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
