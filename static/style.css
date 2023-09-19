@@ -1,3 +1,36 @@
+/* nav */
+.nav-bar {
+    height:70px;
+    padding: 0 20%; 
+    display:flex; 
+    justify-content: space-between;
+    align-items: center;
+    border-bottom:1px solid #ddd; 
+}
+.nav-bar > div {
+    
+}
+.login-out {
+    
+}
+.nav-link {
+    display: inline-block;
+    padding:0 15px;
+    line-height:30px;
+    background-color: rgb(51, 149, 214);
+    color:white; 
+    border-radius: 15px;
+    font-weight: bold;
+    border:none;
+    cursor: pointer;
+}
+
+.logo a {
+    color:rgb(51, 149, 214);
+    font-weight: bold;
+    font-size:25px; 
+}
+
 .twit-area {
     width:500px;
     margin:0 auto;
@@ -29,17 +62,46 @@
 .twit-box > a p, .twit-box > a > span {
     cursor: default;
 }
-
+.author {
+    border-bottom:1px solid rgba(0,0,0,.1); 
+    padding-bottom:5px;
+    margin-bottom: 5px;
+    font-size:.95em
+}
 .parent-twit {
-    color:#999;
+    background-color: #f5f5f5;
+    color:#666;
+    font-size:.9em;
+    margin-bottom:5px; 
+    transition:.1s; 
+}
+.parent-twit:hover {
+    background-color:rgb(203, 239, 253);
+    color:rgb(49, 143, 180);
+}
+.parent-twit a {
+    display:block;
+    padding:10px;
+}
+.twit-content {
     font-weight: 600;
+    font-size:1.2em; 
+    padding:5px 0;
 }
-
-svg {
+.twit-content i {
+    font-size:.5em; 
+}
+.twit-date{
     font-size:.8em;
-    transform: rotate(180deg);
+    color:#777;
 }
 
+
+/* detail page */
+.twit-detail {
+    width:500px;
+    margin:0 auto;
+}
 
 /* reset.css */
 *{margin:0;padding:0;font:inherit;color:inherit;}
@@ -52,3 +114,4 @@ a {text-decoration:none}
 table {border-collapse:collapse;border-spacing:0}
 ul { list-style: none;}
 img { min-width: 100%; display: block; } 
+textarea:focus {outline:none;}

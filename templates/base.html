@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <!-- Our project just needs Font Awesome Free's Solid and Brand files -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
+    <title>Twitter</title>
+</head>
+<body>
+    {% include "nav.html" %}
+    {% block content %}
+    {% endblock %}
+
+    {% block script %}
+    <script>
+        const replyBtn = document.getElementsByClassName("reply-btn")
+        Array.from(replyBtn).forEach((e) => {
+            e.addEventListener('click', () => {
+                const replyForm = e.parentNode.nextElementSibling
+                
+                if(replyForm.style.display === "none"){
+                    replyForm.style.display = "block"
+                }
+                else replyForm.style.display = "none"
+            })
+        })
+    
+        const delete_btn = document.getElementsByClassName("delete-btn")
+        Array.from(delete_btn).forEach((e) => {
+            e.addEventListener('click', () => {
+                if(confirm("정말로 삭제하시겠습니까?")){
+                    location.href = this.dataset.uri; 
+                }
+            })
+        })
+    </script>
+    {% endblock %}
+</body>
+</html>
