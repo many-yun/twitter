@@ -22,17 +22,17 @@
                 const replyForm = e.parentNode.nextElementSibling
                 
                 if(replyForm.style.display === "none"){
-                    replyForm.style.display = "block"
+                    replyForm.style.display = "flex"
                 }
                 else replyForm.style.display = "none"
             })
         })
     
         const delete_btn = document.getElementsByClassName("delete-btn")
-        Array.from(delete_btn).forEach((e) => {
-            e.addEventListener('click', () => {
+        Array.from(delete_btn).forEach(function(e){
+            e.addEventListener('click', function() {
                 if(confirm("정말로 삭제하시겠습니까?")){
-                    location.href = this.dataset.uri; 
+                    location.href = this.dataset.uri
                 }
             })
         })

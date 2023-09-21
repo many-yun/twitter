@@ -2,22 +2,46 @@
 {% block content %}
 
 <div class="twit-detail">
-    <div class="parent-twit">
-        <p>{{ thistwit.parent.content }}</p>
-    </div>
-    <div class="this-twit">
+    <div class="twit-box now-twit">
+        <p class="author">{{ thistwit.author }}</p>
         <p class="twit-content">{{ thistwit.content }}</p>
         <span class="twit-date">{{ thistwit.create_date }}</span>
+        {% if thistwit.parent %}
+        <div class="parent-twit">
+            <a href="{% url 'twitter:detail' thistwit.parent.id %}">
+                <p class="author">{{ thistwit.parent.author }}</p>
+                <p class="twit-content">{{ thistwit.parent.content }}</p>
+                <span class="twit-date">{{ thistwit.parent.create_date }}</span>
+            </a>
+        </div>
+        {% endif %}
+        <div class="twit-btns">
+            <a href="javascript:void(0)" class="reply-btn" value="답글"/>
+                <i class="fa-solid fa-comment-dots"></i>
+            </a>
+            {% if thistwit.author == request.user %}
+            <a href="javascript:void(0)" class="delete-btn" value="삭제" data-uri="{% url 'twitter:twit_delete' thistwit.id %}" >
+                <i class="fa-regular fa-trash-can"></i>
+            </a>
+            {% endif %}
+        </div>
     </div>
 
-    {% for child in thistwit.get_all_children %}
-    {{ child.content }}
-    {% endfor %}
+    
+    <div class="child-twit-list">
+        {% for child in thread %}
+        <div class="thread-line"></div>
+        <div class="twit-box">
+            <div class="author">{{ child.author }}</div>
+            <a href="{% url 'twitter:detail' child.id %}" class="twit-hover">
+                <div class="twit-content">{{ child.content }}</div>
+                <div class="twit-date">{{ child.create_date }}</div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
 
-    {% for twit in twits %}
-        {% if thistwit.parent == twit.content %}
-        {% endif %}
-    {% endfor %}
+
 
     {{ thread|json_script:'thread' }}
 </div>
@@ -26,9 +50,6 @@
 
 {% block script %}
     <script>
-        const threadScript = document.getElementById("thread")
-        const thread = JSON.parse(threadScript.innerHTML)
-        
-        
+
     </script>
 {% endblock %}
