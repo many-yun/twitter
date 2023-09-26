@@ -1,14 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Twit
 from django.utils import timezone
 from .forms import TwitForm
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
+from django.views.decorators.http import require_POST
+from common.forms import UserForm, UserChangeForm
 
 def index(request):
     twits = Twit.objects.order_by('-create_date')
     context = {'twits': twits}
-    return render(request, 'twitter/twits.html', context)
+    return render(request, 'twitter/main.html', context)
 
 def detail(request, twit_id):
     thread = []
@@ -17,25 +19,23 @@ def detail(request, twit_id):
     children = thistwit.get_all_children()
     for child in children:
         thread.append({'id': child.id, 'parent_id': child.parent_id, 'content': child.content, 'author': child.author.username, 'create_date': child.create_date})
-    
     context = {'thread': thread, 'thistwit': thistwit}
     return render(request, 'twitter/twit_detail.html', context)
 
 
 @login_required(login_url='common:login')
+@require_POST
 def twit_create(request):
-    if request.method == "POST":
-        form = TwitForm(request.POST)
-        if form.is_valid():
-            twit = form.save(commit=False)
-            twit.author = request.user
-            twit.create_date = timezone.now()
-            twit.save()
-            return redirect('twitter:index')
+    form = TwitForm(request.POST)
+    if form.is_valid():
+        twit = form.save(commit=False)
+        twit.author = request.user
+        twit.create_date = timezone.now()
+        twit.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found')) # post 후 현재 페이지에서 리다이렉트
     else:
-        form = TwitForm()
-
-    return redirect('twitter:index', {'form': form})
+        messages.error(request, form.errors)
+        return redirect('twitter:index')
 
 @login_required(login_url='common:login')
 def twit_delete(request, twit_id):
@@ -45,4 +45,18 @@ def twit_delete(request, twit_id):
         return redirect('twit:detail', twit_id=twit.id)
     twit.delete()
     return redirect('twitter:index')
-    
+
+
+@login_required(login_url='common:login')
+def mypage(request, user_id):
+    if request.method =="POST" and request.user.id == user_id :
+        form = UserChangeForm(request.POST, request.FILES, instance=request.user, )
+        if form.is_valid():
+            form.save()
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        form = UserChangeForm(instance=request.user)
+
+    twits = Twit.objects.filter(author_id=user_id).order_by('-create_date')
+    context = {'form': form, 'twits': twits}
+    return render(request, 'twitter/my_twits.html', context)

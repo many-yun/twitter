@@ -1,3 +1,4 @@
+{% block script %}
 <div class="nav-bar">
     <div class="logo">
         <a href="{% url 'twitter:index' %}">Twitter</a>
@@ -6,8 +7,12 @@
         {% if user.is_anonymous %}
         <a class="nav-link" href="{% url 'common:login' %}">로그인</a>
         {% else %}
-        <span class="user-name">{{ user.username }}</span>
+        <a class="user-name" href="{% url 'twitter:mypage' user.id %}">{{ user.username }}</a>
         <a class="nav-link" id="logout-btn" href="{% url 'common:logout' %}"data-uri="">로그아웃</a>
+        {% endif %}
+        {% if user.is_anonymous %}
+        <a href="{% url 'common:signup' %}" class="nav-link2">회원가입</a>
         {% endif %}
     </div>
 </div>
+{% endblock %}

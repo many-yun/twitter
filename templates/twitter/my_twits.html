@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="profile-wrap">
+    <div class="profile">
+        <div class="profile-text-wrap">
+            <div class="profile-image">
+                {% if twits.first.author.pp %}
+                <img src="{{ twits.first.author.pp.url }}" alt="">
+                {% else %}
+                <i class="fa-solid fa-user"></i>
+                {% endif %}
+            </div>
+            <div class="profile-text">
+                <p>{{ twits.first.author }}
+                    {% if twits.first.author == request.user %}
+                    <a href="javascript:void(0)" class="setting-btn">
+                        <i class="fa-solid fa-gear"></i>
+                    </a>
+                    {% endif %}
+                </p>
+                <span>
+                    <i class="fa-solid fa-envelope"></i>
+                    {{ twits.first.author.email }}
+                </span>
+            </div>
+        </div>
+        <form action="{% url 'twitter:mypage' user_id=user.id %}" class="profile-form-wrap" method="post" style="display:none"  enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="profile-input">
+                <input type="file" name="pp" id="pp"  style="display:none;" onchange="setThumbnail(event)" multiple/>
+                <label for="pp">
+                    <div id="image_container"></div>
+                </label>
+            </div>
+            <div class="profile-text">
+                <div>
+                    <label for="username">닉네임</label>
+                    <input type="text" name="username" id="username" value="{{ user.username }}" />
+                </div>
+                <div>
+                    <label for="email">이메일</label>
+                    <input type="text" name="email" id="email" value="{{ user.email }}" />
+                </div>
+                <input type="hidden" name="userid" id="userid" value="{{ user.id }}">
+                <a class="nav-link2 setting-btn" style="width:auto">취소</a>
+                <input type="submit" value="수정하기" class="setting-submit-btn nav-link">
+            </div>
+        </form>
+    </div>
+</div>
+<div class="twit-area">
+    {% include "twitter/twits.html" %}
+</div>
+{% endblock %}

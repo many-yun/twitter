@@ -1,65 +1,65 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="twit-area">
-    <form action="{% url 'twitter:twit_create' %}" method="post" class="twit-form">
-        {% csrf_token %}
-        <textarea {% if not user.is_authenticated %}disabled{% endif %} name="content" id="content" rows="10" 
-        placeholder="{% if not user.is_authenticated %}로그인 해주세요{% else %}내용을 입력해주세요.{% endif %}"></textarea>
-        <input type="submit" value="트윗하기" class="nav-link">
-    </form>
-    {% if twits %}
-    <ul class="twit-list">
-        {% for twit in twits %}
-        <li class="twit-box">
-            <p class="author">{{ twit.author.username }}</p>
-            <a href="{% url 'twitter:detail' twit.id %}" class="twit-hover">
-                <p class="twit-content">
-                    {% if twit.parent %}
-                    <i class="fa-solid fa-reply fa-flip-horizontal"></i>
-                    {% endif %}
-                    {{ twit.content }}
-                    <span>{{  }}</span>
-                </p>
-                <span class="twit-date">{{ twit.create_date }}</span>
-            </a>
-            {% if twit.parent %}
-            <div class='parent-twit'>
-                <a href="{% url 'twitter:detail' twit.parent.id %}">
-                    <p class="author">{{ twit.parent.author.username }}</p>
-                    <p class="twit-content">{{ twit.parent.content }}</p>
-                    <span class="twit-date">{{ twit.parent.create_date }}</span>
-                </a>
-            </div>
-            {% endif %}
-            <div class="twit-btns">
-                <a href="javascript:void(0)" class="reply-btn" value="답글"/>
-                    <i class="fa-solid fa-comment-dots"></i>
-                </a>
-                {% if twit.author == request.user %}
-                <a href="javascript:void(0)" class="delete-btn" value="삭제" data-uri="{% url 'twitter:twit_delete' twit.id %}" >
-                    <i class="fa-regular fa-trash-can"></i>
-                </a>
-                {% endif %}
-            </div>
-            <div class="twit-form-wrap" style="display:none;">
-                <i class="fa-solid fa-reply fa-rotate-180"></i>
-                <form action="{% url 'twitter:twit_create' %}" method="post" class="twit-form">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <textarea {% if not user.is_authenticated %}disabled{% endif %} name="content" id="reply-content" rows="10" placeholder="{% if not user.is_authenticated %}로그인 해주세요{% else %}답글을 입력해주세요.{% endif %}"></textarea>
-                    <input type="hidden" name="parent" id="reply-parent" value="{{ twit.id }}">
-                    <input type="submit" value="답글하기" class="nav-link">
-                </form>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
-{% endblock %}
 
-{% block script %}
-<script>
-    
-</script>
-{% endblock %}
+{% if twits %}
+<ul class="twit-list">
+    {% for twit in twits %}
+    <li class="twit-box">
+        <div class="author">
+            <a href="{% url "twitter:mypage" twit.author_id %}">
+                <div class="user-pp">
+                    {% if twit.author.pp %}
+                    <img src="{{ twit.author.pp.url }}" alt="">
+                    {% else %}
+                    <i class="fa-solid fa-user"></i>
+                    {% endif %}
+                </div>
+                {{ twit.author }}
+            </a>
+        </div>
+        <a href="{% url 'twitter:detail' twit.id %}" class="twit-hover">
+            <p class="twit-content">
+                {% if twit.parent %}
+                <i class="fa-solid fa-reply fa-flip-horizontal"></i>
+                {% endif %}
+                {{ twit.content }}
+            </p>
+            <span class="twit-date">{{ twit.create_date }}</span>
+        </a>
+        {% if twit.parent %}
+        <div class='parent-twit'>
+            <a href="{% url 'twitter:detail' twit.parent.id %}">
+                <p class="author">{{ twit.parent.author.username }}</p>
+                <p class="twit-content">{{ twit.parent.content }}</p>
+                <span class="twit-date">{{ twit.parent.create_date }}</span>
+            </a>
+        </div>
+        {% endif %}
+        <div class="twit-btns">
+            <a href="javascript:void(0)" class="reply-btn" value="답글"/>
+                <i class="fa-solid fa-comment-dots"></i>
+                <span>{{ twit.get_my_children }}</span>
+            </a>
+            {% if twit.author == request.user %}
+            <a href="javascript:void(0)" class="delete-btn" value="삭제" data-uri="{% url 'twitter:twit_delete' twit.id %}" >
+                <i class="fa-regular fa-trash-can"></i>
+            </a>
+            {% endif %}
+        </div>
+        <div class="twit-form-wrap" style="display:none;">
+            <i class="fa-solid fa-reply fa-rotate-180"></i>
+            <form 
+            {% if user.is_authenticated %}
+            action="{% url 'twitter:twit_create' %}" 
+            {% else %}
+            action="{% url 'common:login' %}" 
+            {% endif %}
+            method="post" class="twit-form">
+                {% csrf_token %}
+                <textarea {% if not user.is_authenticated %}disabled{% endif %} name="content" id="reply-content" rows="10" placeholder="{% if not user.is_authenticated %}로그인 해주세요{% else %}답글을 입력해주세요.{% endif %}"></textarea>
+                <input type="hidden" name="parent" id="reply-parent" value="{{ twit.id }}">
+                <input type="submit" value="답글하기" class="nav-link" {% if not user.is_authenticated %}disabled="disabled"{% endif %}  >
+            </form>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}

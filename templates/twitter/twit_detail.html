@@ -3,7 +3,18 @@
 
 <div class="twit-detail">
     <div class="twit-box now-twit">
-        <p class="author">{{ thistwit.author }}</p>
+        <div class="author">
+            <a href="{% url "twitter:mypage" thistwit.author_id %}">
+                <div class="user-pp">
+                    {% if thistwit.author.pp %}
+                    <img src="{{ thistwit.author.pp.url }}" alt="">
+                    {% else %}
+                    <i class="fa-solid fa-user"></i>
+                    {% endif %}
+                </div>
+                {{ thistwit.author }}
+            </a>
+        </div>
         <p class="twit-content">{{ thistwit.content }}</p>
         <span class="twit-date">{{ thistwit.create_date }}</span>
         {% if thistwit.parent %}
@@ -24,6 +35,16 @@
                 <i class="fa-regular fa-trash-can"></i>
             </a>
             {% endif %}
+        </div>
+        <div class="twit-form-wrap" style="display:none;">
+            <i class="fa-solid fa-reply fa-rotate-180"></i>
+            <form action="{% url 'twitter:twit_create' %}" method="post" class="twit-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <textarea {% if not user.is_authenticated %}disabled{% endif %} name="content" id="reply-content" rows="10" placeholder="{% if not user.is_authenticated %}로그인 해주세요{% else %}답글을 입력해주세요.{% endif %}"></textarea>
+                <input type="hidden" name="parent" id="reply-parent" value="{{ thistwit.id }}">
+                <input type="submit" value="답글하기" class="nav-link">
+            </form>
         </div>
     </div>
 
@@ -48,8 +69,13 @@
 
 {% endblock %}
 
-{% block script %}
     <script>
-
+        {% comment %} const threadScript = document.getElementById("thread")
+        const scriptParse = JSON.parse(threadScript.innerHTML)
+        console.log(scriptParse)
+        const firstChild = scriptParse[0]
+        const children = scriptParse.filter(e => {
+            firstChild.parent_id === e.parent_id
+        })
+        console.log(firstChild, children) {% endcomment %}
     </script>
-{% endblock %}

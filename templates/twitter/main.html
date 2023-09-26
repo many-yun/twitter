@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="twit-area">
+    {% if messages %}
+    <div class="alert alert-danger my-3" role="alert">
+    {% for message in messages %}
+        <strong>{{ message.tags }}</strong>
+        <ul><li>{{ message.message }}</li></ul>
+    {% endfor %}
+    </div>
+{% endif %}
+
+    <form 
+    {% if user.is_authenticated %}
+    action="{% url 'twitter:twit_create' %}" 
+    {% else %}
+    action="{% url 'common:login' %}" 
+    {% endif %}
+    method="post" class="twit-form">
+        {% csrf_token %}
+        <textarea {% if not user.is_authenticated %}disabled{% endif %} name="content" id="content" rows="10" 
+        placeholder="{% if not user.is_authenticated %}로그인 해주세요{% else %}내용을 입력해주세요.{% endif %}"></textarea>
+        <input type="submit" value="트윗하기" class="nav-link" {% if not user.is_authenticated %}disabled="disabled"{% endif %} >
+    </form>
+    {% include "twitter/twits.html" %}
+</div>
+{% endblock %}
+
+

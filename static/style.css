@@ -13,12 +13,32 @@
 .login-out {
     
 }
+.user-name {
+    font-weight: 600;
+    margin-right:5px;
+    color:#333; 
+}
 .nav-link {
     display: inline-block;
     padding:0 15px;
     line-height:30px;
-    background-color: rgb(51, 149, 214);
+    background-color: #3395d6;
     color:white; 
+    border-radius: 15px;
+    font-weight: bold;
+    border:none;
+    cursor: pointer;
+}
+.nav-link:disabled {
+    background-color: #bbb;
+    cursor:default;
+}
+.nav-link2 {
+    display: inline-block;
+    padding:0 15px;
+    line-height:30px;
+    background-color: white;
+    color:#3395d6; 
     border-radius: 15px;
     font-weight: bold;
     border:none;
@@ -50,7 +70,7 @@
     width:calc(100% - 20px);
 }
 .twit-form{
-    border:1px solid #ccc;
+    border:2px solid #ccc;
     padding:10px;
     text-align: right;
     margin-bottom:30px; 
@@ -81,6 +101,31 @@
     padding-bottom:5px;
     margin-bottom: 5px;
     font-size:.95em
+}
+.author a {
+}
+.user-pp {
+    width:30px;
+    height:30px;
+    border-radius: 100%;
+    overflow: hidden;
+    display:inline-block;
+    vertical-align: middle;
+    margin-right:3px; 
+    text-align: center;
+}
+.user-pp img {
+    object-fit:cover;
+    width:30px;
+    height:30px;
+    vertical-align: middle;
+}
+.user-pp i {
+    width:30px;
+    font-size: 25px;
+    color:#eee;
+    background-color: #bbb;
+    padding-top:5px;
 }
 .parent-twit {
     background-color: #f5f5f5;
@@ -113,6 +158,20 @@
     margin-top:5px;
     text-align: right;
 }
+.twit-btns span {
+    position: absolute;
+    left:-6px;
+    top:-3px;
+    background-color: white;
+    color:#3395d6;
+    font-size:.7em;
+    font-weight: bold;
+    border-radius: 8px;
+    text-align: center;
+    min-width:15px;
+    height:15px; 
+    line-height:15px;
+}
 .twit-btns a {
     width:28px;
     height:28px;
@@ -121,15 +180,21 @@
     text-align: center;
     line-height:28px; 
 }
+.twit-btns a i {
+    line-height: 28px;
+    margin-top: -3px;
+}
 .reply-btn {
-    color:#3395d6
+    color:#3395d6;
+    position:relative;
 }
 .reply-btn:hover {
     background-color: #3395d6;
     color:white;
 }
 .delete-btn {
-    color:rgb(228, 0, 0)
+    color:rgb(228, 0, 0);
+    margin-left:3px; 
 }
 .delete-btn:hover {
     background-color: rgb(228, 0, 0);
@@ -157,6 +222,125 @@
     border:3px solid #3395d6;
 }
 
+/* profile */
+.profile-wrap {
+    border-bottom:1px solid #ddd; 
+    padding: 20px 0;
+    margin-bottom:20px; 
+}
+.profile {
+    width:500px;
+    height:150px;
+    margin:0 auto;
+    border-radius: 200px;
+    border:3px solid #3395d6;
+    padding:25px;
+}
+.profile > div {
+    display: flex;
+    align-items: center;
+}
+.profile-image {
+    width:100px;
+    height:100px;
+    border-radius: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.profile-image img {
+    object-fit:cover;
+    width:100px;
+    height:100px;
+}
+.profile-image i {
+    width:100px;
+    font-size: 90px;
+    color:#eee;
+    background-color: #bbb;
+    padding-top:10px;
+}
+.profile-input {
+    width:100px;
+    height:100px;
+    border-radius: 100%;
+    overflow: hidden;
+}
+.profile-input div {
+    height:100%;
+    background-color: rgba(0,0,0,.05);
+    line-height:90px;
+    text-align:center;
+    color:white;
+    font-size:3em; 
+    cursor: pointer;
+}
+.profile-input:hover div {
+    opacity:.7;
+}
+.profile-text {
+    padding-left:30px; 
+}
+.profile-text > div {
+    margin-bottom:10px; 
+}
+.profile-text p {
+    font-weight: 600;
+    font-size:1.3em;
+    line-height: 1em;
+    margin-bottom:10px; 
+}
+.profile-text span {
+    color:#777;
+}
+.profile-text span i {
+    font-size:.8em;
+    line-height: .8em;
+    color:#aaa; 
+}
+.setting-btn {
+    font-size:.9em;
+    color:#999;
+    display: inline-block;
+    width:20px;
+    height:20px;
+    text-align: center;
+}
+.setting-btn i {
+    transition:.2s;
+}
+.setting-btn:hover i {
+    transform: rotate(180deg);
+}
+/* sign up */
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    height: 100vh;
+    justify-content: center;
+}
+.signup-form-wrap {
+    padding:20px;
+    box-shadow: 0 0 10px rgba(0,0,0,.15);
+    border-radius: 10px;;
+}
+.signup-form-wrap > div {
+}
+.signup-form-wrap  > div label {
+    display: block;
+    margin-bottom:5px;
+}
+.signup-form-wrap  > div input {
+    margin-bottom: 15px;
+    width:300px;
+    border:1px solid #aaa;
+    border-radius: 0;
+    line-height:40px;
+}
+
 /* reset.css */
 *{margin:0;padding:0;font:inherit;color:inherit;}
 *, :after, :before {box-sizing:border-box;flex-shrink:0;}
@@ -169,3 +353,4 @@ table {border-collapse:collapse;border-spacing:0}
 ul { list-style: none;}
 img { min-width: 100%; display: block; } 
 textarea:focus {outline:none;}
+i {vertical-align: middle;}
