@@ -11,9 +11,11 @@
 </head>
 <body>
     {% include "nav.html" %}
+    <div class="infinite">
     {% block content %}
     {% endblock %}
-
+    </div>  
+    <div class="pagination"></div>
     {% block script %}
     <script>
         const replyBtn = document.getElementsByClassName("reply-btn")
@@ -75,6 +77,49 @@
               reader.readAsDataURL(image);
             }
           }
+        
+        const url = window.location.href
+        const currentUrl = url.split('?page=')[0]
+        const urlParam = window.location.search
+        const searchParams = new URLSearchParams(urlParam)
+        const param = !searchParams.get('page') ? '1' : searchParams.get('page')
+        let page = Number(param)
+
+        function loadMoreData() {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `${currentUrl}?page=${page + 1}`, true);
+
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    const parser = new DOMParser()
+                    const data = parser.parseFromString(xhr.responseText, 'text/html')
+                    const twitBox = data.querySelectorAll('.twit-box')
+                    const nextTwits = data.querySelector('.twit-list')
+
+                    if(twitBox.length > 0) {
+                        const twitList = document.querySelector('.twit-area')
+                        twitList.appendChild(nextTwits)
+                        page++
+                    }
+                    else {
+                        console.log('No more data')
+                    }
+    
+                }
+            };
+            xhr.send();
+          }
+
+          window.addEventListener('scroll', () => {
+            let scrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
+            let windowHeight = window.innerHeight; // 스크린 창
+            let fullHeight = document.body.scrollHeight ; 
+        
+            if(scrollLocation + windowHeight >= fullHeight){
+                loadMoreData()
+            }
+        })
+
     </script>
     {% endblock %}
 </body>

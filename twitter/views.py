@@ -6,10 +6,22 @@ from django.utils import timezone
 from .forms import TwitForm
 from django.views.decorators.http import require_POST
 from common.forms import UserForm, UserChangeForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import Http404
 
 def index(request):
+    page_query = 1
     twits = Twit.objects.order_by('-create_date')
-    context = {'twits': twits}
+    paginator = Paginator(twits, page_query * 10) # 트위터 10개씩
+    page = request.GET.get('page', page_query) # 현재페이지 쿼리 파라미터
+
+    try:
+        page_obj = paginator.page(page)
+    except (EmptyPage, PageNotAnInteger): # 초과된 페이지일 경우 데이터x
+        print("트윗이 없습니다.")
+        raise Http404("페이지가 존재하지 않습니다.")
+
+    context = {'twits': page_obj}
     return render(request, 'twitter/main.html', context)
 
 def detail(request, twit_id):
@@ -48,7 +60,7 @@ def twit_delete(request, twit_id):
 
 
 @login_required(login_url='common:login')
-def mypage(request, user_id):
+def mypage(request, user_id):    
     if request.method =="POST" and request.user.id == user_id :
         form = UserChangeForm(request.POST, request.FILES, instance=request.user, )
         if form.is_valid():
@@ -56,7 +68,20 @@ def mypage(request, user_id):
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         form = UserChangeForm(instance=request.user)
-
+    
+    page_query = 1
     twits = Twit.objects.filter(author_id=user_id).order_by('-create_date')
-    context = {'form': form, 'twits': twits}
+    my_twit = twits.first
+    paginator = Paginator(twits, page_query * 10) # 트위터 10개씩
+    page = request.GET.get('page', page_query) # 현재페이지 쿼리 파라미터
+
+    try:
+        page_obj = paginator.page(page)
+    except (EmptyPage, PageNotAnInteger): # 초과된 페이지일 경우 데이터x
+        print("트윗이 없습니다.")
+        raise Http404("페이지가 존재하지 않습니다.")
+    
+
+
+    context = {'form': form, 'twits': page_obj, "my_twit": my_twit }
     return render(request, 'twitter/my_twits.html', context)

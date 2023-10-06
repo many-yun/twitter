@@ -303,12 +303,16 @@
 .setting-btn {
     font-size:.9em;
     color:#999;
-    display: inline-block;
+    text-align: center;
+    border:1px solid white;
     width:20px;
     height:20px;
-    text-align: center;
+    display: inline-block;
 }
 .setting-btn i {
+    width:100%;
+    height:100%;
+    vertical-align: top;
     transition:.2s;
 }
 .setting-btn:hover i {
