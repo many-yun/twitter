@@ -57,7 +57,7 @@ def twit_delete(request, twit_id):
         messages.error(request, '삭제 권한이 없습니다.')
         return redirect('twit:detail', twit_id=twit.id)
     twit.delete()
-    return redirect('twitter:index')
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found')) # post 후 현재 페이지에서 리다이렉트
 
 
 @login_required(login_url='common:login')

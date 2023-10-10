@@ -18,49 +18,52 @@
     <div class="pagination"></div>
     {% block script %}
     <script>
-        const replyBtn = document.getElementsByClassName("reply-btn")
-        Array.from(replyBtn).forEach((e) => {
-            e.addEventListener('click', () => {
-                const replyForm = e.parentNode.nextElementSibling
-                
-                if(replyForm.style.display === "none"){
-                    replyForm.style.display = "flex"
-                }
-                else replyForm.style.display = "none"
+        function btnFunction() {
+            const replyBtn = document.getElementsByClassName("reply-btn")
+            Array.from(replyBtn).forEach((e) => {
+                e.addEventListener('click', () => {
+                    const replyForm = e.parentNode.nextElementSibling
+                    
+                    if(replyForm.style.display === "none"){
+                        replyForm.style.display = "flex"
+                    }
+                    else replyForm.style.display = "none"
+                })
             })
-        })
-    
-        const delete_btn = document.getElementsByClassName("delete-btn")
-        Array.from(delete_btn).forEach(function(e){
-            e.addEventListener('click', function() {
-                if(confirm("정말로 삭제하시겠습니까?")){
-                    location.href = this.dataset.uri
-                }
+        
+            const delete_btn = document.getElementsByClassName("delete-btn")
+            Array.from(delete_btn).forEach(function(e){
+                e.addEventListener('click', function() {
+                    if(confirm("정말로 삭제하시겠습니까?")){
+                        location.href = this.dataset.uri
+                    }
+                })
             })
-        })
 
-        let settingMode = false
-        const settingBtn = document.getElementsByClassName("setting-btn")
-        const profile = document.getElementsByClassName("profile")[0]
-        const profileText = document.getElementsByClassName("profile-text-wrap")[0]
-        const profileForm = document.getElementsByClassName("profile-form-wrap")[0]
+            let settingMode = false
+            const settingBtn = document.getElementsByClassName("setting-btn")
+            const profile = document.getElementsByClassName("profile")[0]
+            const profileText = document.getElementsByClassName("profile-text-wrap")[0]
+            const profileForm = document.getElementsByClassName("profile-form-wrap")[0]
 
-        Array.from(settingBtn).forEach(function(e) {
-            e.addEventListener('click', function(){
-                if(settingMode === false){
-                    profile.classList.add("setting-mode")
-                    settingMode = true
-                    profileText.style.display = "none"
-                    profileForm.style.display = "flex"
-                }
-                else {
-                    profile.classList.remove("setting-mode")
-                    settingMode = false
-                    profileText.style.display = "flex"
-                    profileForm.style.display = "none"
-                }
+            Array.from(settingBtn).forEach(function(e) {
+                e.addEventListener('click', function(){
+                    if(settingMode === false){
+                        profile.classList.add("setting-mode")
+                        settingMode = true
+                        profileText.style.display = "none"
+                        profileForm.style.display = "flex"
+                    }
+                    else {
+                        profile.classList.remove("setting-mode")
+                        settingMode = false
+                        profileText.style.display = "flex"
+                        profileForm.style.display = "none"
+                    }
+                })
             })
-        })
+        }
+        btnFunction()
 
         // 이미지 썸네일 미리보기
         function setThumbnail(event) {
@@ -120,6 +123,7 @@
                     else {
                         console.log('No more data')
                     }
+                    btnFunction()
     
                 }
             };
@@ -135,6 +139,8 @@
                 loadMoreData()
             }
         })
+
+        
 
     </script>
     {% endblock %}
