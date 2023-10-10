@@ -27,9 +27,9 @@
             else replyForm.style.display = "none"
         }
 
-        const deleteEvent = () => {
+        const deleteEvent = (e) => {
             if(confirm("정말로 삭제하시겠습니까?")){
-                location.href = this.dataset.uri
+                location.href = e.currentTarget.dataset.uri
             }
         }
 
@@ -39,8 +39,8 @@
                 e.addEventListener('click', replyEvent)
             })
         
-            const delete_btn = document.getElementsByClassName("delete-btn")
-            Array.from(delete_btn).forEach(function(e){
+            const delete_btns = document.getElementsByClassName("delete-btn")
+            Array.from(delete_btns).forEach(function(e){
                 e.addEventListener('click', deleteEvent)
             })
 

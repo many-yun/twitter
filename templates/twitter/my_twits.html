@@ -31,7 +31,11 @@
             <div class="profile-input">
                 <input type="file" name="pp" id="pp"  style="display:none;" onchange="setThumbnail(event)"  accept=".jpg, .png, .gif" multiple/>
                 <label for="pp" class="pp">
+                    {% if my_twit.author.pp %}
                     <img src="{{ my_twit.author.pp.url }}" alt="" class="now-pp">
+                    {% else %}
+                    <div style="height:100%"></div>
+                    {% endif %}
                     <div id="image_container"></div>
                     <div class="image-container">+</div>
                 </label>
