@@ -18,35 +18,39 @@
     <div class="pagination"></div>
     {% block script %}
     <script>
+        const replyEvent = (e) => {
+            const replyForm = e.currentTarget.parentNode.nextElementSibling
+            
+            if(replyForm.style.display === "none"){
+                replyForm.style.display = "flex"
+            }
+            else replyForm.style.display = "none"
+        }
+
+        const deleteEvent = () => {
+            if(confirm("정말로 삭제하시겠습니까?")){
+                location.href = this.dataset.uri
+            }
+        }
+
         function btnFunction() {
-            const replyBtn = document.getElementsByClassName("reply-btn")
-            Array.from(replyBtn).forEach((e) => {
-                e.addEventListener('click', () => {
-                    const replyForm = e.parentNode.nextElementSibling
-                    
-                    if(replyForm.style.display === "none"){
-                        replyForm.style.display = "flex"
-                    }
-                    else replyForm.style.display = "none"
-                })
+            const replyBtns = document.getElementsByClassName("reply-btn")
+            Array.from(replyBtns).forEach((e) => {
+                e.addEventListener('click', replyEvent)
             })
         
             const delete_btn = document.getElementsByClassName("delete-btn")
             Array.from(delete_btn).forEach(function(e){
-                e.addEventListener('click', function() {
-                    if(confirm("정말로 삭제하시겠습니까?")){
-                        location.href = this.dataset.uri
-                    }
-                })
+                e.addEventListener('click', deleteEvent)
             })
 
             let settingMode = false
-            const settingBtn = document.getElementsByClassName("setting-btn")
+            const settingBtns = document.getElementsByClassName("setting-btn")
             const profile = document.getElementsByClassName("profile")[0]
             const profileText = document.getElementsByClassName("profile-text-wrap")[0]
             const profileForm = document.getElementsByClassName("profile-form-wrap")[0]
 
-            Array.from(settingBtn).forEach(function(e) {
+            Array.from(settingBtns).forEach(function(e) {
                 e.addEventListener('click', function(){
                     if(settingMode === false){
                         profile.classList.add("setting-mode")
