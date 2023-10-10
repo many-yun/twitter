@@ -209,7 +209,15 @@
     width:500px;
     margin:30px auto;
 }
-.child-twit-list {}
+.child-twit-list {
+    /* border:1px solid #eee; */
+}
+.child-twit-list > i {
+    width:15px;
+    font-size:.8em;
+    vertical-align: top;
+    padding-bottom:15px;
+}
 
 .thread-line {
     width:4px;
@@ -220,6 +228,31 @@
 .now-twit {
     box-shadow: none;
     border:3px solid #3395d6;
+}
+.pp {
+    position: relative;
+}
+#image_container {
+    width:100%;
+    position:absolute;
+    left:0;
+    top:0;
+
+}
+.image-container {
+    width:100%;
+    position:absolute;
+    left:0;
+    top:0;
+    background-color: #333;
+}
+.reply-box {
+    margin-top:10px; 
+    padding:10px; 
+    border:2px solid #ddd;
+    border-radius:10px;
+    width: calc(100% - 22px);
+    display: inline-block;
 }
 
 /* profile */
@@ -268,17 +301,18 @@
     border-radius: 100%;
     overflow: hidden;
 }
-.profile-input div {
+.profile-input .image-container {
     height:100%;
-    background-color: rgba(0,0,0,.05);
+    background-color: black;
+    opacity:.3;
     line-height:90px;
     text-align:center;
     color:white;
     font-size:3em; 
     cursor: pointer;
 }
-.profile-input:hover div {
-    opacity:.7;
+.profile-input:hover .image-container {
+    opacity:.6;
 }
 .profile-text {
     padding-left:30px; 

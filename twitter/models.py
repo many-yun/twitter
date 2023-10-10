@@ -13,8 +13,8 @@ class Twit(models.Model):
     
     def get_all_children(self):
         twit_list = list(self.children.all())
-        if twit_list:
-            twit_list.extend(list(twit_list[0].get_all_children())) # extend : 리스트 끝에 항목 추가 (extend와 append의 차이?)
+        # if twit_list:
+        #     twit_list.extend(list(twit_list)) # extend : 리스트 끝에 항목 추가 (extend와 append의 차이?)
         return twit_list
     
     def get_my_children(self):

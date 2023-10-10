@@ -29,6 +29,7 @@
         <div class="twit-btns">
             <a href="javascript:void(0)" class="reply-btn" value="답글"/>
                 <i class="fa-solid fa-comment-dots"></i>
+                <span>{{ thistwit.get_my_children }}</span>
             </a>
             {% if thistwit.author == request.user %}
             <a href="javascript:void(0)" class="delete-btn" value="삭제" data-uri="{% url 'twitter:twit_delete' thistwit.id %}" >
@@ -51,9 +52,18 @@
     
     <div class="child-twit-list">
         {% for child in thread %}
-        <div class="thread-line"></div>
-        <div class="twit-box">
-            <div class="author">{{ child.author }}</div>
+        <i class="fa-solid fa-reply fa-rotate-180"></i>
+        <div class="reply-box">
+            <div class="author">
+                <div class="user-pp">
+                    {% if child.pp %}
+                    <img src="{{ child.pp.url }}" alt="">
+                    {% else %}
+                    <i class="fa-solid fa-user"></i>
+                    {% endif %}
+                </div>
+                {{ child.author }}
+            </div>
             <a href="{% url 'twitter:detail' child.id %}" class="twit-hover">
                 <div class="twit-content">{{ child.content }}</div>
                 <div class="twit-date">{{ child.create_date }}</div>
@@ -61,21 +71,6 @@
         </div>
         {% endfor %}
     </div>
-
-
-
-    {{ thread|json_script:'thread' }}
 </div>
 
 {% endblock %}
-
-    <script>
-        {% comment %} const threadScript = document.getElementById("thread")
-        const scriptParse = JSON.parse(threadScript.innerHTML)
-        console.log(scriptParse)
-        const firstChild = scriptParse[0]
-        const children = scriptParse.filter(e => {
-            firstChild.parent_id === e.parent_id
-        })
-        console.log(firstChild, children) {% endcomment %}
-    </script>

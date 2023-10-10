@@ -2,6 +2,7 @@
 {% block content %}
 <div class="profile-wrap">
     <div class="profile">
+        <!-- 프로필영역 -->
         <div class="profile-text-wrap">
             <div class="profile-image">
                 {% if my_twit.author.pp %}
@@ -24,12 +25,15 @@
                 </span>
             </div>
         </div>
+        <!-- 프로필 수정 form -->
         <form action="{% url 'twitter:mypage' user_id=user.id %}" class="profile-form-wrap" method="post" style="display:none"  enctype="multipart/form-data">
             {% csrf_token %}
             <div class="profile-input">
-                <input type="file" name="pp" id="pp"  style="display:none;" onchange="setThumbnail(event)" multiple/>
-                <label for="pp">
+                <input type="file" name="pp" id="pp"  style="display:none;" onchange="setThumbnail(event)"  accept=".jpg, .png, .gif" multiple/>
+                <label for="pp" class="pp">
+                    <img src="{{ my_twit.author.pp.url }}" alt="" class="now-pp">
                     <div id="image_container"></div>
+                    <div class="image-container">+</div>
                 </label>
             </div>
             <div class="profile-text">

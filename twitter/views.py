@@ -30,7 +30,8 @@ def detail(request, twit_id):
 
     children = thistwit.get_all_children()
     for child in children:
-        thread.append({'id': child.id, 'parent_id': child.parent_id, 'content': child.content, 'author': child.author.username, 'create_date': child.create_date})
+        thread.append({'id': child.id, 'parent_id': child.parent_id, 'content': child.content, 'author': child.author.username, 'create_date': child.create_date, "pp": child.author.pp})
+
     context = {'thread': thread, 'thistwit': thistwit}
     return render(request, 'twitter/twit_detail.html', context)
 
@@ -80,8 +81,6 @@ def mypage(request, user_id):
     except (EmptyPage, PageNotAnInteger): # 초과된 페이지일 경우 데이터x
         print("트윗이 없습니다.")
         raise Http404("페이지가 존재하지 않습니다.")
-    
-
 
     context = {'form': form, 'twits': page_obj, "my_twit": my_twit }
     return render(request, 'twitter/my_twits.html', context)

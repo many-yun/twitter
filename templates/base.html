@@ -68,18 +68,34 @@
               var reader = new FileReader();
     
               reader.onload = function(event) {
+                const imgContainer = document.querySelector("div#image_container")
                 var img = document.createElement("img");
-                img.setAttribute("src", event.target.result);
-                document.querySelector("div#image_container").appendChild(img);
+                img.classList.add('new-pp')
+                const newPP = document.querySelector(".new-pp")
+
+                // 미리보기 이미지 무한 추가 방지
+                if (imgContainer.children.length <= 0) {
+                    img.setAttribute("src", event.target.result);
+                    imgContainer.appendChild(img);
+                }
+                else {
+                    newPP.remove()
+                    img.setAttribute("src", event.target.result);
+                    imgContainer.appendChild(img);
+                }
+                // 미리보기 이미지 추가시 기존 프로필 이미지 숨김처리
+                document.querySelector(".now-pp").style.opacity = "0"
+                console.log(imgContainer.children.length)
               };
     
               console.log(image);
               reader.readAsDataURL(image);
             }
-          }
+        }
         
+        // 무한스크롤 구현
         const url = window.location.href
-        const currentUrl = url.split('?page=')[0]
+        const currentUrl = url.split('?page=')[0] // 현재페이지 주소
         const urlParam = window.location.search
         const searchParams = new URLSearchParams(urlParam)
         const param = !searchParams.get('page') ? '1' : searchParams.get('page')
