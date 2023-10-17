@@ -15,9 +15,19 @@
     {% block content %}
     {% endblock %}
     </div>  
+    <div class="top">TOP</div>
     <div class="pagination"></div>
     {% block script %}
     <script>
+        const topBtn = document.querySelector('.top')
+        topBtn.addEventListener("click", () => {
+            window.scrollTo({
+                top:0,
+                behavior:'smooth'
+            })
+        })
+
+        // 답글 form 노출
         const replyEvent = (e) => {
             const replyForm = e.currentTarget.parentNode.nextElementSibling
             
@@ -27,12 +37,14 @@
             else replyForm.style.display = "none"
         }
 
+        // 트윗 삭제 경고
         const deleteEvent = (e) => {
             if(confirm("정말로 삭제하시겠습니까?")){
                 location.href = e.currentTarget.dataset.uri
             }
         }
 
+        // 답글, 삭제 클릭이벤트
         function btnFunction() {
             const replyBtns = document.getElementsByClassName("reply-btn")
             Array.from(replyBtns).forEach((e) => {
@@ -44,6 +56,7 @@
                 e.addEventListener('click', deleteEvent)
             })
 
+            // 프로필 수정모드 toggle
             let settingMode = false
             const settingBtns = document.getElementsByClassName("setting-btn")
             const profile = document.getElementsByClassName("profile")[0]
@@ -134,7 +147,7 @@
 
           window.addEventListener('scroll', () => {
             let scrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
-            let windowHeight = window.innerHeight; // 스크린 창
+            let windowHeight = window.innerHeight; // 스크린 창 height
             let fullHeight = document.body.scrollHeight ; 
         
             if(scrollLocation + windowHeight >= fullHeight){
