@@ -105,33 +105,31 @@
         const currentUrl = url.split('?page=')[0] // 현재페이지 주소
         const urlParam = window.location.search
         const searchParams = new URLSearchParams(urlParam)
-        const param = !searchParams.get('page') ? '1' : searchParams.get('page')
+        const param = !searchParams.get('page') ? '1' : searchParams.get('page') // page param이 없는 경우 ?page=1
         let page = Number(param)
 
         function loadMoreData() {
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", `${currentUrl}?page=${page + 1}`, true);
+            fetch(`${currentUrl}?page=${page + 1}`)
+            .then(res => res.text())
+            .then(data => {
+                const stringToHTML = (str) => {
+                    var dom = document.createElement('div');
+                    dom.innerHTML = str;
+                    return dom;
+                };
+                const twitBoxes = stringToHTML(data).querySelectorAll('.twit-box')
+                const nextTwits = stringToHTML(data).querySelector('.twit-list')
 
-            xhr.onload = () => {
-                if (xhr.status === 200) {
-                    const parser = new DOMParser()
-                    const data = parser.parseFromString(xhr.responseText, 'text/html')
-                    const twitBox = data.querySelectorAll('.twit-box')
-                    const nextTwits = data.querySelector('.twit-list')
-
-                    if(twitBox.length > 0) {
-                        const twitList = document.querySelector('.twit-area')
-                        twitList.appendChild(nextTwits)
-                        page++
-                    }
-                    else {
-                        console.log('No more data')
-                    }
-                    btnFunction()
-    
+                if(twitBoxes.length > 0) {
+                    const twitList = document.querySelector('.twit-area')
+                    twitList.appendChild(nextTwits)
+                    page++
                 }
-            };
-            xhr.send();
+                else {
+                    console.log('No more data')
+                }
+                btnFunction()
+            })
           }
 
           window.addEventListener('scroll', () => {
