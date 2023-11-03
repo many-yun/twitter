@@ -5,23 +5,21 @@
         <!-- 프로필영역 -->
         <div class="profile-text-wrap">
             <div class="profile-image">
-                {% if my_twit.author.pp %}
-                <img src="{{ my_twit.author.pp.url }}" alt="">
+                {% if my_twit.pp %}
+                <img src="{{ my_twit.pp.url }}" alt="">
                 {% else %}
                 <i class="fa-solid fa-user"></i>
                 {% endif %}
             </div>
-            <div class="profile-text">
-                <p>{{ my_twit.author }}
-                    {% if my_twit.author == request.user %}
-                    <a href="javascript:void(0)" class="setting-btn">
-                        <i class="fa-solid fa-gear"></i>
-                    </a>
+            <div class="profile-text profile-setting-false">
+                <p>{{ my_twit.username }}
+                    {% if my_twit == request.user %}
+                    <i class="fa-solid fa-gear setting-btn"></i>
                     {% endif %}
                 </p>
                 <span>
                     <i class="fa-solid fa-envelope"></i>
-                    {{ my_twit.author.email }}
+                    {{ my_twit.email }}
                 </span>
             </div>
         </div>
@@ -31,8 +29,8 @@
             <div class="profile-input">
                 <input type="file" name="pp" id="pp"  style="display:none;" onchange="setThumbnail(event)"  accept=".jpg, .png, .gif" multiple/>
                 <label for="pp" class="pp">
-                    {% if my_twit.author.pp %}
-                    <img src="{{ my_twit.author.pp.url }}" alt="" class="now-pp">
+                    {% if my_twit.pp %}
+                    <img src="{{ my_twit.pp.url }}" alt="" class="now-pp">
                     {% else %}
                     <div style="height:100%"></div>
                     {% endif %}

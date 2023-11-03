@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Twit
+from django.contrib.auth import get_user_model # User 모델 (settings => AUTH_USER_MODEL)
 from django.utils import timezone
 from .forms import TwitForm
 from django.views.decorators.http import require_POST
@@ -72,7 +73,7 @@ def mypage(request, user_id):
     
     page_query = 1
     twits = Twit.objects.filter(author_id=user_id).order_by('-create_date')
-    my_twit = twits.first
+    my_twit = get_user_model().objects.get(pk=user_id)
     paginator = Paginator(twits, page_query * 10) # 트위터 10개씩
     page = request.GET.get('page', page_query) # 현재페이지 쿼리 파라미터
 
